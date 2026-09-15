@@ -7,13 +7,28 @@
 ## Run it
 
 1. Download the `.dmg` from [granola.ai/download](https://www.granola.ai/download)
-2. Install what you need: `sudo apt install g++-11 nodejs npm python3 curl make`
+2. Install what you need:
+   - Omarchy: `omarchy pkg add gcc python make curl 7zip npm`
+   - Arch: `sudo pacman -S --needed gcc python make curl 7zip npm`
+   - Debian/Ubuntu: `sudo apt install g++-11 nodejs npm python3 curl make`
+   - Fedora: `sudo dnf install gcc-c++ make nodejs npm python3 curl`
 3. Run `./granola-linux.sh "Granola - AI Notepad.dmg"`
-4. Open Granola from your app menu and sign in
+4. Open Granola from your app menu and sign in. On Omarchy that is Super+Space, then type Granola.
 
 That is it. The script installs to `~/Applications/granola`, adds a desktop entry, registers the `granola://` sign-in handler, and tests the build before it tells you it worked. Run `./uninstall.sh` to undo it.
 
-Set `INSTALL_DIR=` to install somewhere else. You need x86-64 and g++ 11 or newer. Tested on Pop!\_OS (Ubuntu 20.04 base, glibc 2.32) with Granola 7.452.1 and Electron 42.7.0.
+Set `INSTALL_DIR=` to install somewhere else. You need x86-64 and g++ 11 or newer.
+
+If your distro packages a modern `7zz` (Arch's `7zip`, Omarchy included), the script uses it and skips the download from 7-zip.org. Only `p7zip`-era builds are too old — see step 1 under *Build it yourself*.
+
+The launcher asks Electron for Wayland when the session is Wayland, and turns on PipeWire capture so the in-app meeting picker can see screens and system audio through `xdg-desktop-portal`. On Hyprland/Omarchy that portal is already there.
+
+Tested on:
+
+| Distro | Granola | Electron |
+|---|---|---|
+| Pop!\_OS (Ubuntu 20.04 base, glibc 2.32) | 7.452.1 | 42.7.0 |
+| Omarchy (Arch, glibc 2.44, gcc 16) | 7.568.0 | 44.0.0 |
 
 ## What works
 
