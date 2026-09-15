@@ -119,7 +119,12 @@ step "Extracting the app payload"
   -o"$WORK/dmg" -y >/dev/null
 cp -r "$WORK/dmg/$RES/app.asar" "$WORK/dmg/$RES/app.asar.unpacked" \
       "$WORK/dmg/$RES/icons" "$INSTALL_DIR/resources/"
-cp "$INSTALL_DIR/resources/icons/icon.png" "$INSTALL_DIR/granola-icon.png"
+# icon.png is a black "g|" wordmark on a transparent canvas — invisible
+# on a dark launcher and not the app icon. mac-icon.png is the lime
+# squircle Granola ships on macOS.
+ICON_SRC="$INSTALL_DIR/resources/icons/mac-icon.png"
+[[ -f "$ICON_SRC" ]] || ICON_SRC="$INSTALL_DIR/resources/icons/icon.png"
+cp "$ICON_SRC" "$INSTALL_DIR/granola-icon.png"
 "$SEVENZZ" e "$DMG" "Granola/Granola.app/Contents/Info.plist" -o"$WORK/appinfo" -y >/dev/null 2>&1 || true
 APP_VER="$(grep -A1 CFBundleShortVersionString "$WORK/appinfo/Info.plist" 2>/dev/null | grep -oE '[0-9]+(\.[0-9]+)+' | head -1)"
 info "Granola ${APP_VER:-?} payload installed"
